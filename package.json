@@ -1,9 +1,11 @@
 {
   "name": "feathers-opentracing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
   "keywords": [
+    "feathers",
+    "feathersjs",
     "opentracing",
     "jaeger"
   ],
