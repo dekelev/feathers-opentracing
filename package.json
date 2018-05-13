@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
-  "scripts": {},
+  "keywords": [
+    "opentracing",
+    "jaeger"
+  ],
   "author": "Dekel Barzilay",
   "license": "MIT",
   "dependencies": {
