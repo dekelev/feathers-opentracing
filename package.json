@@ -1,8 +1,12 @@
 {
   "name": "feathers-opentracing",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dekelev/feathers-opentracing.git"
+  },
   "keywords": [
     "feathers",
     "feathersjs",
