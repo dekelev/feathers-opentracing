@@ -10,7 +10,7 @@ When a request is received with `uber-trace-id` header, service spans will be ne
 Use `hook.params.span` inside FeathersJS services to set custom tags or log custom events. for example:
 ```javascript
 hook.params.span.setTag('some.tag', value);
-hook.params.span.logEvent('some_event', payload);
+hook.params.span.log({ event: 'some_event', data: 'some data' });
 ```
 
 # Install
@@ -29,7 +29,13 @@ For example:
   "opentracing": {  
     "serviceName": "app",  
     "host": "localhost",
-    "includedPrefixes": ["v1/", "v2/"]
+    "includedPrefixes": ["v1/", "v2/"], // Trace only requests with path prefixed by v1/ & v2/
+    "mask": { // optional. default: mask is off
+      "blacklist": ["password"], // Mask values of all properties named 'password' from hook.data & hook.params.query (supports nested objects)
+      "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
+      "replacement": "***", // optional. default: '__MASKED__' - The default value to replace
+    },
+    "debug": true,  // optional. default: false - Sets sampling priority to 1 to force sampling of all requests 
   }
 }
 ```
@@ -85,28 +91,28 @@ module.exports = function () {
 ```javascript
 // src/app.hooks.js
 
-const { opentracingBegin, opentracingEnd, opentracingError, opentracingSetTags } = require('feathers-opentracing');
+const { opentracingBegin, opentracingEnd, opentracingError } = require('feathers-opentracing');
 
 module.exports = {
   before: {
-    all: [opentracingBegin()],
-	...
+    all: [
+      opentracingBegin({ mask: config.opentracing.mask, debug: config.opentracing.debug }),
+      ...
+    ],
   },
   
   after: {
     all: [
-      opentracingSetTags(),
+      ...
       opentracingEnd(),
-    ],
-	...
+    ]
   },
   
   error: {
     all: [
-      opentracingSetTags(),
+      ...
       opentracingError(),
-    ],
-	...
+    ]
   },
 };
 ```

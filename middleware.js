@@ -19,7 +19,7 @@ module.exports = function (req, res, options = { includedPrefixes: [] }) {
   const wire = tracer.extract(opentracing.FORMAT_HTTP_HEADERS, req.headers);
   const span = tracer.startSpan(path, { childOf: wire });
 
-  span.logEvent('request_received');
+  span.log({ event: 'request_received' });
 
   // set trace response headers
   const responseHeaders = {};
@@ -31,9 +31,9 @@ module.exports = function (req, res, options = { includedPrefixes: [] }) {
 
   const finishSpan = () => {
     if (res.statusCode >= 400)
-      span.logEvent('request_error', res.statusMessage);
+      span.log({ event: 'request_error', message: res.statusMessage });
     else
-      span.logEvent('request_finished');
+      span.log({ event: 'request_finished' });
 
     span.setTag('http.status_code', res.statusCode);
     span.setTag('http.method', req.method);

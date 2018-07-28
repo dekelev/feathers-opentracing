@@ -1,6 +1,6 @@
 {
   "name": "feathers-opentracing",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
   "repository": {
@@ -16,6 +16,7 @@
   "author": "Dekel Barzilay",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.10",
     "url": "^0.11.0"
   },
   "devDependencies": {
