@@ -30,12 +30,19 @@ For example:
     "serviceName": "app",  
     "host": "localhost",
     "includedPrefixes": ["v1/", "v2/"], // Trace only requests with path prefixed by v1/ & v2/
-    "mask": { // optional. default: mask is off
-      "blacklist": ["password"], // Mask values of all properties named 'password' from hook.data & hook.params.query (supports nested objects)
-      "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
-      "replacement": "***", // optional. default: '__MASKED__' - The default value to replace
-    },
-    "debug": true,  // optional. default: false - Sets sampling priority to 1 to force sampling of all requests 
+    "options": {
+      "tag": { // optional
+        "id": false, // optional. default: true - tag `hook.id`
+        "data": false, // optional. default: true - tag `hook.data`
+        "query": false // optional. default: true - tag `hook.params.query`
+      },
+      "mask": { // optional. default: mask is off
+        "blacklist": ["password"], // Mask values of all properties named 'password' from `hook.data` & `hook.params.query` (supports nested objects)
+        "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
+        "replacement": "***" // optional. default: '__MASKED__' - The default value to replace
+      }
+      "debug": true  // optional. default: false - Sets sampling priority to 1 to force sampling of all requests
+    } 
   }
 }
 ```
@@ -96,7 +103,7 @@ const { opentracingBegin, opentracingEnd, opentracingError } = require('feathers
 module.exports = {
   before: {
     all: [
-      opentracingBegin({ mask: config.opentracing.mask, debug: config.opentracing.debug }),
+      opentracingBegin({ ...config.opentracing.options }),
       ...
     ],
   },

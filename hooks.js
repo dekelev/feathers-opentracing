@@ -1,10 +1,13 @@
 const opentracing = require('opentracing');
 const { cloneDeepWith, isObject, toLower, some } = require('lodash');
 
+const tagDefaults = { id: true, data: true, query: true };
 const maskDefaults = { blacklist: [], ignoreCase: false, replacement: '__MASKED__' };
 
 const opentracingBegin = (options = {}) => {
   return async hook => {
+    options.tag = { ...tagDefaults, ...options.tag };
+
     const { path, method, id, data, params } = hook;
     const { rootSpan, firstEndpoint, query } = params;
     const tracer = opentracing.globalTracer();
@@ -21,13 +24,13 @@ const opentracingBegin = (options = {}) => {
     span.setTag('span.kind', 'service');
     span.setTag('service.method', method);
 
-    if (id)
+    if (options.tag.id && id)
       span.setTag('id', id);
 
-    if (data && Object.keys(data).length)
+    if (options.tag.data && data && Object.keys(data).length)
       span.setTag('data', options.mask ? mask(data, options.mask) : data);
 
-    if (query && Object.keys(query).length)
+    if (options.tag.query && query && Object.keys(query).length)
       span.setTag('query', options.mask ? mask(query, options.mask) : query);
 
     hook.params.span = span;

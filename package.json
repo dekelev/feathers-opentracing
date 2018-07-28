@@ -1,6 +1,6 @@
 {
   "name": "feathers-opentracing",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
   "repository": {
