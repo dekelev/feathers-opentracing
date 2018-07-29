@@ -2,10 +2,10 @@ const opentracing = require('opentracing');
 const { tagDefaults, mask } = require('./utils');
 
 const opentracingBegin = (options = {}) => {
-  return async hook => {
+  return async context => {
     options.tag = { ...tagDefaults, ...options.tag };
 
-    const { path, method, id, data, params } = hook;
+    const { path, method, id, data, params } = context;
     const { rootSpan, firstEndpoint, query } = params;
     const tracer = opentracing.globalTracer();
     const span = firstEndpoint ? rootSpan : tracer.startSpan(path, { childOf: rootSpan });
@@ -32,15 +32,15 @@ const opentracingBegin = (options = {}) => {
 
     params.span = span;
 
-    return hook;
+    return context;
   };
 };
 
 const opentracingEnd = (options = {}) => {
-  return async hook => {
+  return async context => {
     options.tag = { ...tagDefaults, ...options.tag };
 
-    const { params, result, dispatch } = hook;
+    const { params, result, dispatch } = context;
     const { span } = params;
 
     if (options.tag.result) {
@@ -55,15 +55,15 @@ const opentracingEnd = (options = {}) => {
       span.finish();
     }
 
-    return hook;
+    return context;
   };
 };
 
 const opentracingError = () => {
-  return async hook => {
-    const { params } = hook;
+  return async context => {
+    const { params } = context;
     const { span } = params;
-    const { code, message, stack } = hook.error;
+    const { code, message, stack } = context.error;
 
     span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
     span.setTag(opentracing.Tags.ERROR, true);
@@ -75,7 +75,7 @@ const opentracingError = () => {
       span.finish();
     }
 
-    return hook;
+    return context;
   };
 };
 
