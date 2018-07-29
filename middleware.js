@@ -29,8 +29,8 @@ module.exports = function (req, res, options = {}) {
   span.log({ event: 'request_received' });
   span.setOperationName(path);
 
-  if (options.tag.headers && req.headers && Object.keys(req.headers).length)
-    span.setTag('http.headers', mask(req.headers, options.mask));
+  if (options.tag.requestHeaders && req.headers && Object.keys(req.headers).length)
+    span.setTag('request.headers', mask(req.headers, options.mask));
 
   // set trace response headers
   const responseHeaders = {};
@@ -48,6 +48,13 @@ module.exports = function (req, res, options = {}) {
 
     span.setTag('http.status_code', res.statusCode);
     span.setTag('http.method', req.method);
+
+    if (options.tag.responseHeaders) {
+      const resHeaders = res.getHeaders();
+
+      if (resHeaders && Object.keys(resHeaders).length)
+        span.setTag('response.headers', mask(resHeaders, options.mask));
+    }
 
     span.finish();
   };

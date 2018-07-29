@@ -32,7 +32,8 @@ For example:
     "options": {
       "includedPrefixes": ["v1/", "v2/"], // optional. default: trace all requests - Trace only requests with path prefixed by specified strings, i.e. v1/ & v2/
       "tag": { // optional
-        "headers": false, // optional. default: true - tag `req.headers`
+        "requestHeaders": false, // optional. default: true - tag `req.headers`
+        "responseHeaders": false, // optional. default: true - tag `res.getHeaders()`
         "id": false, // optional. default: true - tag `hook.id`
         "data": false, // optional. default: true - tag `hook.data`
         "query": false // optional. default: true - tag `hook.params.query`
