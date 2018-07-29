@@ -30,7 +30,7 @@ For example:
     "serviceName": "app",  
     "host": "localhost",
     "options": {
-      "includedPrefixes": ["v1/", "v2/"], // Trace only requests with path prefixed by v1/ & v2/
+      "includedPrefixes": ["v1/", "v2/"], // optional. default: trace all requests - Trace only requests with path prefixed by specified strings, i.e. v1/ & v2/
       "tag": { // optional
         "headers": false, // optional. default: true - tag `req.headers`
         "id": false, // optional. default: true - tag `hook.id`
