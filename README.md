@@ -29,9 +29,10 @@ For example:
   "opentracing": {  
     "serviceName": "app",  
     "host": "localhost",
-    "includedPrefixes": ["v1/", "v2/"], // Trace only requests with path prefixed by v1/ & v2/
     "options": {
+      "includedPrefixes": ["v1/", "v2/"], // Trace only requests with path prefixed by v1/ & v2/
       "tag": { // optional
+        "headers": false, // optional. default: true - tag `req.headers`
         "id": false, // optional. default: true - tag `hook.id`
         "data": false, // optional. default: true - tag `hook.data`
         "query": false // optional. default: true - tag `hook.params.query`
@@ -86,7 +87,7 @@ const config = require('config');
 module.exports = function () {  
   ...
   app.use((req, res, next) => {  
-    opentracingMiddleware(req, res, { includedPrefixes: config.opentracing.includedPrefixes });  
+    opentracingMiddleware(req, res, config.opentracing.options);  
     next();  
   });
   ...
@@ -103,7 +104,7 @@ const { opentracingBegin, opentracingEnd, opentracingError } = require('feathers
 module.exports = {
   before: {
     all: [
-      opentracingBegin({ ...config.opentracing.options }),
+      opentracingBegin(config.opentracing.options),
       ...
     ],
   },

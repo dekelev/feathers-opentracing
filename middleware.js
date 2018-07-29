@@ -1,14 +1,21 @@
 const opentracing = require('opentracing');
 const Url = require('url');
+const { tagDefaults, mask } = require('./utils');
 
-module.exports = function (req, res, options = { includedPrefixes: [] }) {
+module.exports = function (req, res, options = {}) {
+  options.tag = { ...tagDefaults, ...options.tag };
+
   const path = ((req.route && req.route.path) || Url.parse(req.url).pathname).replace(/^\/|\/$/g, '');
   let skip = true;
 
-  for (const prefix of options.includedPrefixes) {
-    if (path.startsWith(prefix)) {
-      skip = false;
-      break;
+  if (!options.includedPrefixes || !options.includedPrefixes.length) {
+    skip = false;
+  } else {
+    for (const prefix of options.includedPrefixes) {
+      if (path.startsWith(prefix)) {
+        skip = false;
+        break;
+      }
     }
   }
 
@@ -20,6 +27,9 @@ module.exports = function (req, res, options = { includedPrefixes: [] }) {
   const span = tracer.startSpan(path, { childOf: wire });
 
   span.log({ event: 'request_received' });
+
+  if (options.tag.headers && req.headers && Object.keys(req.headers).length)
+    span.setTag('http.headers', mask(req.headers, options.mask));
 
   // set trace response headers
   const responseHeaders = {};
