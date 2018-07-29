@@ -10,7 +10,7 @@ const opentracingBegin = (options = {}) => {
     const tracer = opentracing.globalTracer();
     const span = firstEndpoint ? rootSpan : tracer.startSpan(path, { childOf: rootSpan });
 
-    if (!hook.params.firstEndpoint) {
+    if (!params.firstEndpoint) {
       span.log({ event: 'request_received' });
       span.setOperationName(path);
     }
@@ -30,17 +30,27 @@ const opentracingBegin = (options = {}) => {
     if (options.tag.query && query && Object.keys(query).length)
       span.setTag('query', options.mask ? mask(query, options.mask) : query);
 
-    hook.params.span = span;
+    params.span = span;
 
     return hook;
   };
 };
 
-const opentracingEnd = () => {
+const opentracingEnd = (options = {}) => {
   return async hook => {
-    const { span } = hook.params;
+    options.tag = { ...tagDefaults, ...options.tag };
 
-    if (!hook.params.firstEndpoint) {
+    const { params, result, dispatch } = hook;
+    const { span } = params;
+
+    if (options.tag.result) {
+      if (params.firstEndpoint && dispatch && Object.keys(dispatch).length)
+        span.setTag('result', options.mask ? mask(dispatch, options.mask) : dispatch);
+      else if (result && Object.keys(result).length)
+        span.setTag('result', options.mask ? mask(result, options.mask) : result);
+    }
+
+    if (!params.firstEndpoint) {
       span.log({ event: 'request_finished' });
       span.finish();
     }
@@ -51,7 +61,8 @@ const opentracingEnd = () => {
 
 const opentracingError = () => {
   return async hook => {
-    const { span } = hook.params;
+    const { params } = hook;
+    const { span } = params;
     const { code, message, stack } = hook.error;
 
     span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
@@ -59,7 +70,7 @@ const opentracingError = () => {
     span.setTag('error.code', code);
     span.setTag('error.stack', stack);
 
-    if (!hook.params.firstEndpoint) {
+    if (!params.firstEndpoint) {
       span.log({ event: 'request_error', message });
       span.finish();
     }

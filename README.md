@@ -36,7 +36,8 @@ For example:
         "responseHeaders": false, // optional. default: true - tag `res.getHeaders()`
         "id": false, // optional. default: true - tag `hook.id`
         "data": false, // optional. default: true - tag `hook.data`
-        "query": false // optional. default: true - tag `hook.params.query`
+        "query": false, // optional. default: true - tag `hook.params.query`
+        "result": true // optional. default: false - tag `hook.result`
       },
       "mask": { // optional. default: mask is off
         "blacklist": ["password"], // Mask values of all properties named 'password' from `hook.data` & `hook.params.query` (supports nested objects)
@@ -113,7 +114,7 @@ module.exports = {
   after: {
     all: [
       ...
-      opentracingEnd(),
+      opentracingEnd(config.opentracing.options),
     ]
   },
   

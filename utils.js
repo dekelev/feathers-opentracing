@@ -1,6 +1,6 @@
 const { cloneDeepWith, isObject, toLower, some } = require('lodash');
 
-const tagDefaults = { requestHeaders: true, responseHeaders: true ,id: true, data: true, query: true };
+const tagDefaults = { requestHeaders: true, responseHeaders: true ,id: true, data: true, query: true, result: false };
 const maskDefaults = { blacklist: [], ignoreCase: false, replacement: '__MASKED__' };
 
 const mask = (values, options = {}) => {
