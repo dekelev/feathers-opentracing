@@ -10,10 +10,10 @@ const opentracingBegin = (options = {}) => {
     const tracer = opentracing.globalTracer();
     const span = firstEndpoint ? rootSpan : tracer.startSpan(path, { childOf: rootSpan });
 
-    if (!hook.params.firstEndpoint)
+    if (!hook.params.firstEndpoint) {
       span.log({ event: 'request_received' });
-
-    span.setOperationName(path);
+      span.setOperationName(path);
+    }
 
     if (options.debug)
       span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);

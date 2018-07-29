@@ -27,6 +27,7 @@ module.exports = function (req, res, options = {}) {
   const span = tracer.startSpan(path, { childOf: wire });
 
   span.log({ event: 'request_received' });
+  span.setOperationName(path);
 
   if (options.tag.headers && req.headers && Object.keys(req.headers).length)
     span.setTag('http.headers', mask(req.headers, options.mask));
