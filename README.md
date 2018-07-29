@@ -37,7 +37,7 @@ For example:
         "id": false, // optional. default: true - tag `hook.id`
         "data": false, // optional. default: true - tag `hook.data`
         "query": false, // optional. default: true - tag `hook.params.query`
-        "result": true // optional. default: false - tag `hook.result`
+        "result": true // optional. default: false - tag `hook.dispatch` if set in the first service call or `hook.result` otherwise
       },
       "mask": { // optional. default: mask is off
         "blacklist": ["password"], // Mask values of all properties named 'password' from `hook.data` & `hook.params.query` (supports nested objects)
