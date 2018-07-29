@@ -1,6 +1,6 @@
 {
   "name": "feathers-opentracing",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "OpenTracing integration for FeathersJS services",
   "main": "index.js",
   "repository": {
@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.10",
+    "request-ip": "^2.1.1",
     "url": "^0.11.0"
   },
   "devDependencies": {

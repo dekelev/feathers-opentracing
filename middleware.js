@@ -1,4 +1,5 @@
 const opentracing = require('opentracing');
+const requestIp = require('request-ip');
 const Url = require('url');
 const { tagDefaults, mask } = require('./utils');
 
@@ -29,6 +30,11 @@ module.exports = function (req, res, options = {}) {
   span.log({ event: 'request_received' });
   span.setOperationName(path);
 
+  if (options.debug)
+    span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
+
+  span.setTag(opentracing.Tags.SPAN_KIND, 'request');
+
   // set trace response headers
   const responseHeaders = {};
   tracer.inject(span, opentracing.FORMAT_TEXT_MAP, responseHeaders);
@@ -43,8 +49,10 @@ module.exports = function (req, res, options = {}) {
     else
       span.log({ event: 'request_finished' });
 
-    span.setTag('http.status_code', res.statusCode);
-    span.setTag('http.method', req.method);
+    span.setTag(opentracing.Tags.HTTP_STATUS_CODE, res.statusCode);
+    span.setTag(opentracing.Tags.HTTP_METHOD, req.method);
+    span.setTag(opentracing.Tags.PEER_HOSTNAME, req.hostname);
+    span.setTag(opentracing.Tags.PEER_ADDRESS, requestIp.getClientIp(req));
 
     if (options.tag.requestHeaders && req.headers && Object.keys(req.headers).length)
       span.setTag('request.headers', options.mask ? mask(req.headers, options.mask) : req.headers);

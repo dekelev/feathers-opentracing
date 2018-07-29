@@ -13,12 +13,13 @@ const opentracingBegin = (options = {}) => {
     if (!params.firstEndpoint) {
       span.log({ event: 'request_received' });
       span.setOperationName(path);
+
+      if (options.debug)
+        span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
+
+      span.setTag(opentracing.Tags.SPAN_KIND, 'service');
     }
 
-    if (options.debug)
-      span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
-
-    span.setTag('span.kind', 'service');
     span.setTag('service.method', method);
 
     if (options.tag.id && id)
