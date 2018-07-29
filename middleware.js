@@ -29,9 +29,6 @@ module.exports = function (req, res, options = {}) {
   span.log({ event: 'request_received' });
   span.setOperationName(path);
 
-  if (options.tag.requestHeaders && req.headers && Object.keys(req.headers).length)
-    span.setTag('request.headers', mask(req.headers, options.mask));
-
   // set trace response headers
   const responseHeaders = {};
   tracer.inject(span, opentracing.FORMAT_TEXT_MAP, responseHeaders);
@@ -49,11 +46,14 @@ module.exports = function (req, res, options = {}) {
     span.setTag('http.status_code', res.statusCode);
     span.setTag('http.method', req.method);
 
+    if (options.tag.requestHeaders && req.headers && Object.keys(req.headers).length)
+      span.setTag('request.headers', options.mask ? mask(req.headers, options.mask) : req.headers);
+
     if (options.tag.responseHeaders) {
       const resHeaders = res.getHeaders();
 
       if (resHeaders && Object.keys(resHeaders).length)
-        span.setTag('response.headers', mask(resHeaders, options.mask));
+        span.setTag('response.headers', options.mask ? mask(resHeaders, options.mask) : resHeaders);
     }
 
     span.finish();
