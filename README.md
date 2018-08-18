@@ -13,6 +13,8 @@ hook.params.span.setTag('some.tag', value);
 hook.params.span.log({ event: 'some_event', data: 'some data' });
 ```
 
+* [feathers-distributed](https://github.com/kalisio/feathers-distributed) is supported
+
 # Install
 
 ```npm install --save feathers-opentracing```
