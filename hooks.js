@@ -1,14 +1,32 @@
 const opentracing = require('opentracing');
 const { tagDefaults, mask } = require('./utils');
 
+const UBER_TRACE_ID = 'uber-trace-id';
+
 const opentracingBegin = (options = {}) => {
   return async context => {
+    const { path, method, id, data, params, service } = context;
+    const tracer = opentracing.globalTracer();
+
+    if (service.remote) {
+      const remoteHeaders = {};
+      tracer.inject(params.rootSpan, opentracing.FORMAT_TEXT_MAP, remoteHeaders);
+      params.rootSpan = remoteHeaders[UBER_TRACE_ID];
+
+      return context;
+    }
+
     options.tag = { ...tagDefaults, ...options.tag };
 
-    const { path, method, id, data, params } = context;
     const { rootSpan, firstEndpoint, query } = params;
-    const tracer = opentracing.globalTracer();
-    const span = firstEndpoint ? rootSpan : tracer.startSpan(path, { childOf: rootSpan });
+    let span = null;
+
+    if (typeof rootSpan === 'string') {
+      const wire = tracer.extract(opentracing.FORMAT_TEXT_MAP, { [UBER_TRACE_ID]: rootSpan });
+      span = tracer.startSpan(path, { childOf: wire });
+    } else {
+      span = firstEndpoint ? rootSpan : tracer.startSpan(path, { childOf: rootSpan });
+    }
 
     if (!params.firstEndpoint) {
       span.log({ event: 'request_received' });
@@ -39,6 +57,9 @@ const opentracingBegin = (options = {}) => {
 
 const opentracingEnd = (options = {}) => {
   return async context => {
+    if (context.service.remote)
+      return context;
+
     options.tag = { ...tagDefaults, ...options.tag };
 
     const { params, result, dispatch } = context;
@@ -62,6 +83,9 @@ const opentracingEnd = (options = {}) => {
 
 const opentracingError = () => {
   return async context => {
+    if (context.service.remote)
+      return context;
+
     const { params } = context;
     const { span } = params;
     const { code, message, stack } = context.error;

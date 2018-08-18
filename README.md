@@ -134,3 +134,6 @@ await hook.app.service('users').get(id, {
   rootSpan: hook.params.rootSpan,
 });
 ```
+
+## Mac OS X
+Run once `sudo sysctl -w net.inet.udp.maxdgram=65535` to prevent UDP buffer size errors.
