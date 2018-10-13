@@ -123,7 +123,7 @@ module.exports = {
   error: {
     all: [
       ...
-      opentracingError(),
+      opentracingError(config.opentracing.options),
     ]
   },
 };

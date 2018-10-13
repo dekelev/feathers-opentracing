@@ -81,14 +81,19 @@ const opentracingEnd = (options = {}) => {
   };
 };
 
-const opentracingError = () => {
+const opentracingError = (options = {}) => {
   return async context => {
     if (context.service.remote)
       return context;
 
-    const { params } = context;
-    const { span } = params;
     const { code, message, stack } = context.error;
+    const { params } = context;
+    let { span } = params;
+
+    if (!span) {
+      opentracingBegin(options)(context);
+      span = params.span;
+    }
 
     span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
     span.setTag(opentracing.Tags.ERROR, true);
