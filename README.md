@@ -45,7 +45,10 @@ For example:
         "blacklist": ["password"], // Mask values of all properties named 'password' from `hook.data` & `hook.params.query` (supports nested objects)
         "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
         "replacement": "***" // optional. default: '__MASKED__' - The default value to replace
-      }
+      },
+      "hideErrors": { // optional. default: all errors will be traced with high priority
+        "users": [404, 409] // optional. hint the tracer to exclude specific errors of selected services. i.e. hide 404 & 409 errors of the `users` service
+      },
       "debug": true  // optional. default: false - Sets sampling priority to 1 to force sampling of all requests
     } 
   }
