@@ -95,9 +95,7 @@ const opentracingError = (options = {}) => {
       span = params.span;
     }
 
-    if (options.hideErrors && options.hideErrors[path] && options.hideErrors[path].includes(code)) {
-      span.setTag(opentracing.Tags.ERROR, false);
-    } else {
+    if (!options.hideErrors || !options.hideErrors[path] || !options.hideErrors[path].includes(code)) {
       span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
       span.setTag(opentracing.Tags.ERROR, true);
     }
