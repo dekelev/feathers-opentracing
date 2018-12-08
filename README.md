@@ -46,8 +46,8 @@ For example:
         "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
         "replacement": "***" // optional. default: '__MASKED__' - The default value to replace
       },
-      "hideErrors": { // optional. default: all errors will be tagged with error=true
-        "users": [404, 409] // optional. tag specific errors of selected services with error=false. i.e. hide 404 & 409 errors of the `users` service
+      "hideErrors": { // optional. default: all errors will be tagged with error=true and set with sampling priority 1
+        "users": [404, 409] // optional. tag selected services errors with error=false and don't set their sampling priority to 1. i.e. hide 404 & 409 errors of the `users` service
       },
       "debug": true  // optional. default: false - Sets sampling priority to 1 to force sampling of all requests
     } 
