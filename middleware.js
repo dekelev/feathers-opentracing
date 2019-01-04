@@ -1,7 +1,7 @@
 const opentracing = require('opentracing');
 const requestIp = require('request-ip');
 const Url = require('url');
-const { tagDefaults, mask } = require('./utils');
+const { tagDefaults, tagObject } = require('./utils');
 
 module.exports = function (req, res, options = {}) {
   options.tag = { ...tagDefaults, ...options.tag };
@@ -55,13 +55,13 @@ module.exports = function (req, res, options = {}) {
     span.setTag(opentracing.Tags.PEER_ADDRESS, requestIp.getClientIp(req));
 
     if (options.tag.requestHeaders && req.headers && Object.keys(req.headers).length)
-      span.setTag('request.headers', options.mask ? mask(req.headers, options.mask) : req.headers);
+      tagObject('request.headers', req.headers, span, options);
 
     if (options.tag.responseHeaders) {
       const resHeaders = res.getHeaders();
 
       if (resHeaders && Object.keys(resHeaders).length)
-        span.setTag('response.headers', options.mask ? mask(resHeaders, options.mask) : resHeaders);
+        tagObject('response.headers', resHeaders, span, options);
     }
 
     span.finish();

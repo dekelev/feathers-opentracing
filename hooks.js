@@ -1,5 +1,5 @@
 const opentracing = require('opentracing');
-const { tagDefaults, mask } = require('./utils');
+const { tagDefaults, tagObject } = require('./utils');
 
 const UBER_TRACE_ID = 'uber-trace-id';
 
@@ -44,10 +44,10 @@ const opentracingBegin = (options = {}) => {
       span.setTag('id', id);
 
     if (options.tag.data && data && Object.keys(data).length)
-      span.setTag('data', options.mask ? mask(data, options.mask) : data);
+      tagObject('data', data, span, options);
 
     if (options.tag.query && query && Object.keys(query).length)
-      span.setTag('query', options.mask ? mask(query, options.mask) : query);
+      tagObject('query', query, span, options);
 
     params.span = span;
 
@@ -67,9 +67,9 @@ const opentracingEnd = (options = {}) => {
 
     if (options.tag.result) {
       if (params.firstEndpoint && dispatch && Object.keys(dispatch).length)
-        span.setTag('result', options.mask ? mask(dispatch, options.mask) : dispatch);
+        tagObject('result', dispatch, span, options);
       else if (result && Object.keys(result).length)
-        span.setTag('result', options.mask ? mask(result, options.mask) : result);
+        tagObject('result', result, span, options);
     }
 
     if (!params.firstEndpoint) {
