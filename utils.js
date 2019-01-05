@@ -8,47 +8,50 @@ const tagObject = (tag, obj, span, options = {}) => {
   const normalizedTag = camelCase(tag);
   const tagSettings = options.tag[normalizedTag];
   const index = Boolean(tagSettings && tagSettings.index);
+  const maskEnabled = Boolean(maskOptions.blacklist.length);
 
-  if (!index && !maskOptions.blacklist.length) {
+  if (!index && !maskEnabled) {
     span.setTag(tag, obj);
 
     return;
   }
 
-  const clonedObj = processObject(tag, obj, span, index, maskOptions);
+  const clonedObj = processObject(tag, obj, span, index, maskEnabled, maskOptions);
 
   if (!index)
     span.setTag(tag, clonedObj);
 };
 
-const processObject = (tag, obj, span, index, { blacklist, ignoreCase, replacement }) => {
+const processObject = (tag, obj, span, index, maskEnabled, { blacklist, ignoreCase, replacement }) => {
   const nestedStack = [{ key: tag, value: obj }];
 
   return cloneDeepWith(obj, (value, key, object) => {
-    if (index && Array.isArray(value)) {
-      const arr = [];
+    if (index) {
+      if (Array.isArray(value)) {
+        const arr = [];
 
-      for (const [idx, val] of Object.entries(value))
-        arr.push(processObject(getKeyName(`${key || tag}[${idx}]`, nestedStack), val, span, index, { blacklist, ignoreCase, replacement }));
+        for (const [idx, val] of Object.entries(value))
+          arr.push(processObject(getKeyName(`${key || tag}[${idx}]`, nestedStack), val, span, index, maskEnabled, { blacklist, ignoreCase, replacement }));
 
-      return arr;
-    }
+        return arr;
+      }
 
-    let lastObject =  nestedStack[nestedStack.length - 1].value;
+      let lastObject = nestedStack[nestedStack.length - 1].value;
 
-    while (lastObject !== (object || obj)) {
-      nestedStack.pop();
-      lastObject =  nestedStack[nestedStack.length - 1].value;
+      while (lastObject !== (object || obj)) {
+        nestedStack.pop();
+        lastObject = nestedStack[nestedStack.length - 1].value;
+      }
     }
 
     if (isObject(value) && !value.toISOString && !Buffer.isBuffer(value)) {
-      if (key && Object.keys(value).length)
+      if (index && key && Object.keys(value).length)
         nestedStack.push({ key, value });
 
       return; // eslint-disable-line
     }
 
-    if (key !== undefined && some(blacklist, item => ignoreCase ? toLower(key) === toLower(item) : key === item)) {
+    if (maskEnabled && key !== undefined && some(blacklist, item => ignoreCase ? toLower(key) === toLower(item) : key === item)) {
       if (index)
         span.setTag(getKeyName(key, nestedStack), replacement);
 
@@ -57,11 +60,13 @@ const processObject = (tag, obj, span, index, { blacklist, ignoreCase, replaceme
 
     let strValue = null;
 
-    if (isObject(value) && value.toISOString)
-      strValue = value.toISOString();
+    if (isObject(value)) {
+      if (value.toISOString)
+        strValue = value.toISOString();
 
-    if (Buffer.isBuffer(value))
-      strValue = value.toString();
+      if (Buffer.isBuffer(value))
+        strValue = value.toString();
+    }
 
     if (index)
       span.setTag(getKeyName(key, nestedStack), strValue || value);
