@@ -50,7 +50,7 @@ const processObject = (tag, obj, span, index, { blacklist, ignoreCase, replaceme
 
     if (key !== undefined && some(blacklist, item => ignoreCase ? toLower(key) === toLower(item) : key === item)) {
       if (index)
-        span.setTag(getKeyName(key, nestedStack), value);
+        span.setTag(getKeyName(key, nestedStack), replacement);
 
       return replacement;
     }

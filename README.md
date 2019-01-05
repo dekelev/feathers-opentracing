@@ -37,7 +37,9 @@ For example:
         "requestHeaders": false, // optional. default: true - tag `req.headers`
         "responseHeaders": false, // optional. default: true - tag `res.getHeaders()`
         "id": false, // optional. default: true - tag `hook.id`
-        "data": false, // optional. default: true - tag `hook.data`
+        "data": { // optional. default: true - tag `hook.data`
+          "index": true // optional. default: false - break JSON object or array to multiple tags. this option can be set for any JSON tag
+        },
         "query": false, // optional. default: true - tag `hook.params.query`
         "result": true // optional. default: false - tag `hook.dispatch` if set in the first service call or `hook.result` otherwise
       },
