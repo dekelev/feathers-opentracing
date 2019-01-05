@@ -1,4 +1,4 @@
-const { cloneDeepWith, isObject, toLower, some, map: pluck } = require('lodash');
+const { cloneDeepWith, isObject, toLower, some, map } = require('lodash');
 
 const tagDefaults = { requestHeaders: true, responseHeaders: true ,id: true, data: true, query: true, result: false };
 const maskDefaults = { blacklist: [], ignoreCase: false, replacement: '__MASKED__' };
@@ -76,7 +76,7 @@ const processObject = (tag, obj, span, index, maskEnabled, { blacklist, ignoreCa
 };
 
 const getKeyName = (key, nestedStack) => {
-  return `${pluck(nestedStack, val => val.key).join('.')}${key ? '.' + key : ''}`;
+  return `${map(nestedStack, val => val.key).join('.')}${key ? '.' + key : ''}`;
 };
 
 const camelCase = input => {
