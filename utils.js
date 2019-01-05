@@ -41,7 +41,7 @@ const processObject = (tag, obj, span, index, { blacklist, ignoreCase, replaceme
       lastObject =  nestedStack[nestedStack.length - 1].value;
     }
 
-    if (isObject(value) && !value.toISOString) {
+    if (isObject(value) && !value.toISOString && !Buffer.isBuffer(value)) {
       if (key && Object.keys(value).length)
         nestedStack.push({ key, value });
 
@@ -60,6 +60,9 @@ const processObject = (tag, obj, span, index, { blacklist, ignoreCase, replaceme
     if (isObject(value) && value.toISOString)
       strValue = value.toISOString();
 
+    if (Buffer.isBuffer(value))
+      strValue = value.toString();
+
     if (index)
       span.setTag(getKeyName(key, nestedStack), strValue || value);
 
@@ -72,9 +75,7 @@ const getKeyName = (key, nestedStack) => {
 };
 
 const camelCase = input => {
-  return input.toLowerCase().replace(/\.(.)/g, (match, group1) => {
-    return group1.toUpperCase();
-  });
+  return input.toLowerCase().replace(/\.(.)/g, (match, group1) => group1.toUpperCase());
 };
 
 module.exports = {
