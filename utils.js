@@ -61,8 +61,12 @@ const processObject = (tag, obj, span, index, maskEnabled, { blacklist, ignoreCa
     let strValue = null;
 
     if (isObject(value)) {
-      if (value.toISOString)
-        strValue = value.toISOString();
+      try {
+        if (value.toISOString)
+          strValue = value.toISOString();
+      } catch (err) {
+        strValue = value.toString();
+      }
 
       if (Buffer.isBuffer(value))
         strValue = value.toString();
