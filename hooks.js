@@ -74,7 +74,12 @@ const opentracingEnd = (options = {}) => {
 
     if (!params.firstEndpoint) {
       span.log({ event: 'request_finished' });
-      span.finish();
+
+      try {
+        span.finish();
+      } catch (err) {
+        return context;
+      }
     }
 
     return context;
@@ -109,7 +114,12 @@ const opentracingError = (options = {}) => {
 
     if (!params.firstEndpoint) {
       span.log({ event: 'request_error', message });
-      span.finish();
+
+      try {
+        span.finish();
+      } catch (err) {
+        return context;
+      }
     }
 
     return context;
