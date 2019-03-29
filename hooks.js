@@ -92,6 +92,10 @@ const opentracingError = (options = {}) => {
 
     if (!span) {
       opentracingBegin(options)(context);
+
+      if (!params.span)
+        return context;
+
       span = params.span;
     }
 
