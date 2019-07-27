@@ -13,7 +13,10 @@
     "opentracing",
     "jaeger"
   ],
-  "author": "Dekel Barzilay",
+  "author": {
+    "name": "Dekel Barzilay",
+    "email": "dekelev@gmail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.15",
