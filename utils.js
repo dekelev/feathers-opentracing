@@ -44,7 +44,7 @@ const processObject = (tag, obj, span, index, maskEnabled, { blacklist, ignoreCa
       }
     }
 
-    if (isObject(value) && !value.toISOString && !Buffer.isBuffer(value)) {
+    if (isObject(value) && !value.toISOString && !isBuffer(value)) {
       if (index && key && Object.keys(value).length)
         nestedStack.push({ key, value });
 
@@ -68,7 +68,7 @@ const processObject = (tag, obj, span, index, maskEnabled, { blacklist, ignoreCa
         strValue = value.toString();
       }
 
-      if (Buffer.isBuffer(value))
+      if (isBuffer(value))
         strValue = value.toString();
     }
 
@@ -85,6 +85,10 @@ const getKeyName = (key, nestedStack) => {
 
 const camelCase = input => {
   return input.toLowerCase().replace(/\.(.)/g, (match, group1) => group1.toUpperCase());
+};
+
+const isBuffer = value => {
+  return Buffer.isBuffer(value) || (value.buffer && Object.keys(value).length === 1 && Buffer.isBuffer(value.buffer));
 };
 
 module.exports = {
