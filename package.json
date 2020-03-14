@@ -24,7 +24,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "eslint": "^6.1.0"
+    "eslint": "^6.8.0"
   },
   "peerDependencies": {
     "opentracing": "^0.14.4"
