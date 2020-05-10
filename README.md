@@ -7,10 +7,10 @@ When a new request reaches a server, the middleware will start a root span that 
 With Jaeger tracer, the `X-Trace-Id` response header contains the trace ID that can be passed as `uber-trace-id` request header to other external services.
 When a request is received with `uber-trace-id` header, service spans will be nested under the span of that trace ID.
 
-Use `hook.params.span` inside FeathersJS services to set custom tags or log custom events. for example:
+Use `context.params.span` inside FeathersJS services to set custom tags or log custom events. for example:
 ```javascript
-hook.params.span.setTag('some.tag', value);
-hook.params.span.log({ event: 'some_event', data: 'some data' });
+context.params.span.setTag('some.tag', value);
+context.params.span.log({ event: 'some_event', data: 'some data' });
 ```
 
 * [feathers-distributed](https://github.com/kalisio/feathers-distributed) is supported
@@ -36,15 +36,15 @@ For example:
       "tag": { // optional
         "requestHeaders": false, // optional. default: true - tag `req.headers`
         "responseHeaders": false, // optional. default: true - tag `res.getHeaders()`
-        "id": false, // optional. default: true - tag `hook.id`
-        "data": { // optional. default: true - tag `hook.data`
+        "id": false, // optional. default: true - tag `context.id`
+        "data": { // optional. default: true - tag `context.data`
           "index": true // optional. default: false - break JSON object or array to multiple tags. this option can be set for any JSON tag
         },
-        "query": false, // optional. default: true - tag `hook.params.query`
-        "result": true // optional. default: false - tag `hook.dispatch` if set in the first service call or `hook.result` otherwise
+        "query": false, // optional. default: true - tag `context.params.query`
+        "result": true // optional. default: false - tag `context.dispatch` if set in the first service call or `context.result` otherwise
       },
       "mask": { // optional. default: mask is off
-        "blacklist": ["password"], // Mask values of all properties named 'password' from `hook.data` & `hook.params.query` (supports nested objects)
+        "blacklist": ["password"], // Mask values of all properties named 'password' from `context.data` & `context.params.query` (supports nested objects)
         "ignoreCase": true, // optional. default: false - Whether to ignore case sensitivity when matching keys
         "replacement": "***" // optional. default: '__MASKED__' - The default value to replace
       },
@@ -137,8 +137,8 @@ module.exports = {
 ## Pass root span to inner service calls
 
 ```javascript
-await hook.app.service('users').get(id, {
-  rootSpan: hook.params.rootSpan,
+await context.app.service('users').get(id, {
+  rootSpan: context.params.rootSpan,
 });
 ```
 
