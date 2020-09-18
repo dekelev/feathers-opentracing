@@ -13,7 +13,9 @@ context.params.span.setTag('some.tag', value);
 context.params.span.log({ event: 'some_event', data: 'some data' });
 ```
 
-* [feathers-distributed](https://github.com/kalisio/feathers-distributed) is supported
+Supported FeathersJS distributed modules:
+* [feathers-http-distributed](https://github.com/dekelev/feathers-http-distributed)
+* [feathers-distributed](https://github.com/kalisio/feathers-distributed)
 
 # Install
 
@@ -140,6 +142,14 @@ module.exports = {
 await context.app.service('users').get(id, {
   rootSpan: context.params.rootSpan,
 });
+```
+
+## Set error on span
+Use the `setOpentracingError` method when error is not thrown, but span should still be set with error.
+```javascript
+const { setOpentracingError } = require('feathers-opentracing');
+
+setOpentracingError(span, new Error('error message'));
 ```
 
 ## Mac OS X

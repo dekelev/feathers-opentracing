@@ -1,4 +1,5 @@
 const { cloneDeepWith, isObject, toLower, some, map } = require('lodash');
+const opentracing = require('opentracing');
 
 const tagDefaults = { requestHeaders: true, responseHeaders: true ,id: true, data: true, query: true, result: false };
 const maskDefaults = { blacklist: [], ignoreCase: false, replacement: '__MASKED__' };
@@ -91,7 +92,15 @@ const isBuffer = value => {
   return Buffer.isBuffer(value) || (value.buffer && Object.keys(value).length === 1 && Buffer.isBuffer(value.buffer));
 };
 
+const setOpentracingError = (span, error) => {
+  span.setTag(opentracing.Tags.SAMPLING_PRIORITY, 1);
+  span.setTag(opentracing.Tags.ERROR, true);
+  span.setTag('error.code', error.code);
+  span.setTag('error.stack', error.stack);
+};
+
 module.exports = {
   tagDefaults,
   tagObject,
+  setOpentracingError,
 };
