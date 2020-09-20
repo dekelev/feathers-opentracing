@@ -2,28 +2,62 @@
   "name": "feathers-opentracing",
   "version": "2.4.0",
   "description": "OpenTracing integration for FeathersJS services",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dekelev/feathers-opentracing.git"
-  },
+  "main": "lib/",
   "keywords": [
     "feathers",
     "feathersjs",
     "opentracing",
     "jaeger"
   ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dekelev/feathers-opentracing.git"
+  },
   "author": {
     "name": "Dekel Barzilay",
     "email": "dekelev@gmail.com"
   },
-  "license": "MIT",
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/dekelev/feathers-opentracing/issues"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "scripts": {
+    "publish": "git push origin --tags && npm run changelog && git push origin",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish",
+    "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
+    "lint": "semistandard --fix lib/**/*.js test/**/*.js --config",
+    "mocha": "nyc mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "test": "npm run lint && npm run mocha"
+  },
+  "directories": {
+    "lib": "lib"
+  },
   "dependencies": {
     "lodash": "^4.17.20",
-    "request-ip": "^2.1.3",
-    "url": "^0.11.0"
+    "request-ip": "^2.1.3"
   },
   "peerDependencies": {
     "opentracing": "^0.14.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "coveralls": "^3.1.0",
+    "mocha": "^8.1.1",
+    "nyc": "^15.1.0",
+    "opentracing": "^0.14.4",
+    "semistandard": "^14.2.3",
+    "sinon": "^9.0.3"
+  },
+  "semistandard": {
+    "env": [
+      "mocha"
+    ]
   }
 }

@@ -1,5 +1,11 @@
 # OpenTracing integration for FeathersJS services
 
+[![Build Status](https://travis-ci.org/dekelev/feathers-opentracing.svg?branch=master)](https://travis-ci.org/dekelev/feathers-opentracing)
+[![Coverage Status](https://coveralls.io/repos/github/dekelev/feathers-opentracing/badge.svg?branch=master)](https://coveralls.io/github/dekelev/feathers-opentracing?branch=master)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/standard/semistandard)
+[![Dependency Status](https://img.shields.io/david/dekelev/feathers-opentracing.svg)](https://david-dm.org/dekelev/feathers-opentracing)
+[![npm](https://img.shields.io/npm/v/feathers-opentracing.svg?maxAge=3600)](https://www.npmjs.com/package/feathers-opentracing)
+
 This module contains a set of Express middleware and FeathersJS hooks to automate distributed tracing for FeathersJS services using OpenTracing and your preferred Tracer (e.g. Jaeger).
 
 When a new request reaches a server, the middleware will start a root span that will be shared by the target FeathersJS service. Inner service calls will be nested under this root span, as long as you pass it to them.

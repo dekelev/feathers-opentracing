@@ -28,5 +28,10 @@ node_modules
 .lock-wscript
 
 .idea
-*.iml
-data.db
+.nyc_output
+
+# Tern
+.tern-port
+
+# Yarn
+yarn.lock
