@@ -202,6 +202,21 @@ describe('Feathers Cassandra service', () => {
       expect(res.headers[TRACE_HEADER_NAME]).to.be.ok;
     });
 
+    it('expect span to finish once when ExpressJS triggers both finish & close events', () => {
+      opentracingMiddleware(req, res);
+
+      res.events.finish();
+
+      expect(req.feathers.rootSpan).to.be.ok;
+      expect(req.feathers.rootSpan.finished).to.equal(true);
+
+      req.feathers.rootSpan.finished = false;
+
+      res.events.close();
+
+      expect(req.feathers.rootSpan.finished).to.equal(false);
+    });
+
     it('with includedPrefixes option and no matching route', () => {
       options.includedPrefixes = ['v0'];
 
