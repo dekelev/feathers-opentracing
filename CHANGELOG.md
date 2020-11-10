@@ -1,5 +1,17 @@
 # Changelog
 
+## [v2.5.0](https://github.com/dekelev/feathers-opentracing/tree/v2.5.0) (2020-11-10)
+
+[Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.4.3...v2.5.0)
+
+**Closed issues:**
+
+- Question: Start the span from feathers-client [\#5](https://github.com/dekelev/feathers-opentracing/issues/5)
+
+**Merged pull requests:**
+
+- fix error span.finish\(\) call when already called. [\#6](https://github.com/dekelev/feathers-opentracing/pull/6) ([rockrotem](https://github.com/rockrotem))
+
 ## [v2.4.3](https://github.com/dekelev/feathers-opentracing/tree/v2.4.3) (2020-09-23)
 
 [Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.4.2...v2.4.3)
