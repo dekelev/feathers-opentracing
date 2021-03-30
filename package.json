@@ -40,7 +40,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "request-ip": "^2.1.3",
     "url": "^0.11.0"
   },
@@ -48,13 +48,13 @@
     "opentracing": "^0.14.4"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "coveralls": "^3.1.0",
-    "mocha": "^8.2.1",
+    "mocha": "^8.3.2",
     "nyc": "^15.1.0",
     "opentracing": "^0.14.5",
     "semistandard": "^16.0.0",
-    "sinon": "^9.2.1"
+    "sinon": "^10.0.0"
   },
   "semistandard": {
     "env": [
