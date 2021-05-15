@@ -50,7 +50,7 @@
   "devDependencies": {
     "chai": "^4.3.4",
     "coveralls": "^3.1.0",
-    "mocha": "^8.3.2",
+    "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "opentracing": "^0.14.5",
     "semistandard": "^16.0.0",
