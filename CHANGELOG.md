@@ -1,5 +1,15 @@
 # Changelog
 
+[Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.5.2...HEAD)
+
+**Merged pull requests:**
+
+- Bump hosted-git-info from 2.8.8 to 2.8.9 [\#8](https://github.com/dekelev/feathers-opentracing/pull/8) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v2.5.2](https://github.com/dekelev/feathers-opentracing/tree/v2.5.2) (2021-05-15)
+
+[Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.5.1...v2.5.2)
+
 ## [v2.5.1](https://github.com/dekelev/feathers-opentracing/tree/v2.5.1) (2021-03-30)
 
 [Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.5.0...v2.5.1)
