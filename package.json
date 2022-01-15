@@ -23,7 +23,7 @@
     "url": "https://github.com/dekelev/feathers-opentracing/issues"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 14"
   },
   "scripts": {
     "publish": "git push origin --tags && npm run changelog && git push origin",
