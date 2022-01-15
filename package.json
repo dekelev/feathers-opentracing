@@ -45,16 +45,16 @@
     "url": "^0.11.0"
   },
   "peerDependencies": {
-    "opentracing": "^0.14.4"
+    "opentracing": "^0.14.7"
   },
   "devDependencies": {
     "chai": "^4.3.4",
-    "coveralls": "^3.1.0",
-    "mocha": "^8.4.0",
+    "coveralls": "^3.1.1",
+    "mocha": "^9.1.4",
     "nyc": "^15.1.0",
-    "opentracing": "^0.14.5",
-    "semistandard": "^16.0.0",
-    "sinon": "^10.0.0"
+    "opentracing": "^0.14.7",
+    "semistandard": "^16.0.1",
+    "sinon": "^12.0.1"
   },
   "semistandard": {
     "env": [
