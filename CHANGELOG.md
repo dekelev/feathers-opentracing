@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2.5.4](https://github.com/dekelev/feathers-opentracing/tree/v2.5.4) (2023-03-04)
+
+[Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.5.3...v2.5.4)
+
 ## [v2.5.3](https://github.com/dekelev/feathers-opentracing/tree/v2.5.3) (2022-01-15)
 
 [Full Changelog](https://github.com/dekelev/feathers-opentracing/compare/v2.5.2...v2.5.3)
